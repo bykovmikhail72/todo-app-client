@@ -1,0 +1,75 @@
+// @import "./normalize.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  font-family: "Mazzard M", "Roboto", sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+a {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:focus {
+    outline-color: #004fd8;
+  }
+}
+
+button {
+  padding: 0;
+
+  color: inherit;
+  font-family: "Mazzard M", "Roboto", sans-serif;
+
+  cursor: pointer;
+
+  border-width: 0;
+  outline: none;
+  background-color: transparent;
+}
+
+input,
+textarea {
+  margin: 0;
+  padding: 0;
+
+  font-family: "Mazzard M", "Roboto", sans-serif;
+
+  border: 0;
+  border: none;
+  outline: none;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+p {
+  margin: 0;
+}

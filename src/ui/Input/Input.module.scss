@@ -1,0 +1,193 @@
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 300px;
+  font-weight: 400;
+  color: #000;
+  border-radius: 1px;
+
+  .iconPointer {
+    cursor: pointer;
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    display: none;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .inputWrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .label {
+    display: block;
+    margin-bottom: 9px;
+  }
+
+  .leftIcon,
+  .rightIcon {
+    width: fit-content !important;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .leftIcon {
+    left: 0;
+    color: #000;
+    &.small {
+      padding-left: 8px;
+    }
+    &.medium {
+      padding-left: 14px;
+    }
+    &.large {
+      padding-left: 16px;
+    }
+  }
+
+  .rightIcon {
+    right: 0;
+    color: #000;
+    gap: 4px;
+    &.small {
+      padding-right: 8px;
+    }
+    &.medium {
+      padding-right: 14px;
+    }
+    &.large {
+      padding-right: 16px;
+    }
+  }
+
+  .input {
+    width: 100%;
+    padding: 5px 11px 5px 7px;
+    transition: 0.1s border ease;
+    border-radius: 2px;
+    box-sizing: border-box;
+
+    &.small {
+      height: 30px;
+      font-size: 14px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-left: 7px;
+
+      &.inputLeftIcon {
+        padding-left: 27px;
+      }
+
+      &.inputRightIcon {
+        padding-right: 27px;
+      }
+    }
+
+    &.medium {
+      height: 38px;
+      font-size: 16px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      padding-left: 11px;
+
+      &.inputLeftIcon {
+        padding-left: 37px;
+      }
+
+      &.inputRightIcon {
+        padding-right: 37px;
+      }
+    }
+
+    &.large {
+      height: 46px;
+      font-size: 18px;
+
+      &.inputLeftIcon {
+        padding-left: 47px;
+      }
+
+      &.inputRightIcon {
+        padding-right: 47px;
+      }
+    }
+
+    &::placeholder {
+      color: #000;
+    }
+
+    &.default {
+      border: 1px solid #a9d4ff;
+
+      &:hover,
+      &:active {
+        border: 1px solid #67b3ff;
+      }
+
+      &:focus {
+        border: 2px solid #1874cf;
+      }
+    }
+
+    &:disabled {
+      border: 1px solid #ebebeb;
+      background-color: #f6f6f6;
+      color: #8f9399;
+
+      &:hover,
+      &:active {
+        border: 1px solid #ebebeb;
+      }
+
+      &:focus {
+        border: 1px solid #ebebeb;
+      }
+    }
+
+    // &.warning {
+    //   border: 1px solid $color-state-warning;
+
+    //   &:hover,
+    //   &:active {
+    //     border: 1px solid $color-state-warning;
+    //   }
+
+    //   &:focus {
+    //     border: 2px solid $color-state-warning;
+    //   }
+    // }
+
+    //     &.error {
+    //       border: 1px solid $color-state-attention_P;
+
+    //       &:hover,
+    //       &:active {
+    //         border: 1px solid $color-state-attention_P;
+    //       }
+
+    //       &:focus {
+    //         border: 1px solid $color-state-attention_P;
+    //       }
+    //     }
+  }
+
+  .inputWithClearButton {
+    padding: 5px 40px 5px 7px;
+  }
+}
