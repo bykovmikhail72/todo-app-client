@@ -1,3 +1,10 @@
+Вашему вниманию представляется приложения для контроля деятельности сотрудников.     
+Приложение создано на стеке node.js, express, sequelize, React, typescript.    
+Демонстрационный вариант представлен по адресу: http://45.146.165.123
+
+Для входа в качестве руководителя: email: manager@mail.ru, password: 123456    
+Для входа в качестве пользователя: email: user@mail.ru, password: 123456
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
