@@ -1,0 +1,13 @@
+version: '3.1'
+
+services:
+  frontend:
+    container_name: front
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      REACT_APP_BASE_URL: http://localhost:8080
+    restart: on-failure
+    ports:
+      - 3000:3000

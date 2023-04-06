@@ -2,7 +2,7 @@ import Input from 'ui/Input/Input'
 import { Typography } from 'ui/Typography'
 import { IModalProps } from './types'
 import { useAuthStore } from 'modules/Auth/store/AuthStore'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import cn from 'classnames'
 
 import styles from './Modal.module.scss'
@@ -19,7 +19,7 @@ const Modal = ({ id, className, onClick }: IModalProps) => {
     if (authStore.user?.role === 'MANAGER') {
       return false
     } else {
-      if (typeof id === 'number') {
+      if (id) {
         return true
       } else {
         return false
@@ -40,11 +40,13 @@ const Modal = ({ id, className, onClick }: IModalProps) => {
   })
 
   useEffect(() => {
-    if (typeof id === 'number') {
+    if (id) {
       const index = mainStore.todo.findIndex((item) => item.id === id)
 
+      console.log({...mainStore.todo})
+
       setForm(() => ({
-        title: mainStore.todo[index].title,
+        title: mainStore.todo[index]?.title,
         description: mainStore.todo[index]?.description,
         finishDate: mainStore.todo[index]?.finishDate,
         status: mainStore.todo[index]?.status,
@@ -54,8 +56,8 @@ const Modal = ({ id, className, onClick }: IModalProps) => {
     }
   }, [id, mainStore.todo])
 
-  const onSubmit = async () => {
-    if (typeof id === 'number') {
+  const onSubmit = useCallback(async () => {
+    if (id) {
       await mainRest.updateTodo({
         id,
         title,
@@ -79,13 +81,13 @@ const Modal = ({ id, className, onClick }: IModalProps) => {
       })
     }
     onClick()
-  }
+  }, [authStore.user?.email, description, finishDate, id, mainRest, onClick, priority, status, title, worker])
 
-  const handleChange = ({ target: { value, name } }) => {
+  const handleChange = useCallback(({ target: { value, name } }) => {
     setForm((prevForm) => ({ ...prevForm, [name]: value }))
-  }
+  }, [])
 
-  const onCloseModal = () => {
+  const onCloseModal = useCallback(() => {
     setForm(() => ({
       title: '',
       description: '',
@@ -96,7 +98,7 @@ const Modal = ({ id, className, onClick }: IModalProps) => {
     }))
 
     onClick()
-  }
+  }, [onClick])
 
   const modalClassNames = cn(styles.modal, className)
   const layoutClassNames = cn(styles.layout, className)
@@ -114,7 +116,6 @@ const Modal = ({ id, className, onClick }: IModalProps) => {
           value={title}
           disabled={isDisabled()}
           onChange={handleChange}
-          contentSize="small"
         />
         <Input
           label="Описание"
@@ -122,7 +123,6 @@ const Modal = ({ id, className, onClick }: IModalProps) => {
           value={description}
           disabled={isDisabled()}
           onChange={handleChange}
-          contentSize="small"
         />
         <Input
           label="Дата окончания"
@@ -138,14 +138,12 @@ const Modal = ({ id, className, onClick }: IModalProps) => {
           disabled={isDisabled()}
           value={priority}
           onChange={handleChange}
-          contentSize="small"
         />
         <Input
           label="Статус (к выполнению, выполняется, выполнена, отменена)"
           name="status"
           value={status}
           onChange={handleChange}
-          contentSize="small"
         />
         <Input
           label="Ответственный"
@@ -155,7 +153,6 @@ const Modal = ({ id, className, onClick }: IModalProps) => {
             authStore.user?.role === 'MANAGER' ? worker : authStore.user?.name
           }
           onChange={handleChange}
-          contentSize="small"
         />
         <Button
           onClick={onSubmit}

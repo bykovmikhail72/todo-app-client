@@ -8,7 +8,7 @@ export class MainStore {
   todo? = undefined
 
   constructor() {
-    makeAutoObservable(this)
+    makeAutoObservable<MainStore, 'mainRest'>(this, { mainRest: false })
   }
 
   private setTodo(data) {

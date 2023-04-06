@@ -1,5 +1,5 @@
 import { container, singleton } from 'tsyringe'
-import { AbstractRest } from '../../../lib/services/AbstractRest'
+import { AbstractRest } from '../../../services/AbstractRest'
 import jwt_decode from 'jwt-decode'
 
 export interface ILoginParams {
@@ -29,7 +29,7 @@ export class AuthRest extends AbstractRest {
       this.error = false
       const { data } = await this.http.post('/api/login', params)
       this.setToken(data.token)
-      console.log(jwt_decode(data.token))
+      
       return jwt_decode(data.token)
     } catch (e) {
       this.error = true

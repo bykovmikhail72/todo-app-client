@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Typography } from '../Typography'
 import styles from './Input.module.scss'
 import { IInputProps } from './types'
@@ -18,7 +19,7 @@ const Input = ({
   clearButton,
   error,
   state = 'default',
-  contentSize = 'medium',
+  contentSize = 'small',
   ...rest
 }: IInputProps) => {
   const classNames = cn(styles.inputContainer, className)
@@ -54,4 +55,4 @@ const Input = ({
   )
 }
 
-export default Input
+export default memo(Input)

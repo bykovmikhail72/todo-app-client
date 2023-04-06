@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useMainStore } from '../store/MainStore'
 import TodoItem from '../components/TodoItem'
 import { observer } from 'mobx-react-lite'
@@ -7,7 +7,7 @@ import styles from './MainPage.module.scss'
 import { Typography } from 'ui/Typography'
 import Button from 'ui/Button/Button'
 import { useAuthStore } from 'modules/Auth/store/AuthStore'
-import Modal from 'lib/components/Modal'
+import Modal from '../components/Modal/Modal'
 
 import cn from 'classnames'
 
@@ -27,19 +27,22 @@ const MainPage = () => {
     authStore.getOneUser(authStore.user.id)
   }, [authStore, id, mainStore])
 
-  const handleExit = () => {
+  const handleExit = useCallback(() => {
     authStore.logout()
-  }
+  }, [authStore])
 
-  const onShowModal = (id?: number) => {
-    setIsShowModal(!isShowModal)
-    id && setId(id)
-  }
+  const onShowModal = useCallback(
+    (id?: number) => {
+      setIsShowModal(!isShowModal)
+      id && setId(id)
+    },
+    [isShowModal],
+  )
 
-  const onHideModal = () => {
+  const onHideModal = useCallback(() => {
     setId(undefined)
     setIsShowModal(false)
-  }
+  }, [])
 
   const filteredTodo = (option?: string) => {
     setFilter(true)
@@ -82,48 +85,6 @@ const MainPage = () => {
     }
   }
 
-  const renderContent = () => {
-    if (filter) {
-      return todo?.map((item) => {
-        return (
-          <TodoItem
-            key={item.id}
-            id={item.id}
-            title={item.title}
-            description={item.description}
-            createDate={item.createdAt}
-            creator={item.creator}
-            finishDate={item.finishDate}
-            priority={item.priority}
-            status={item.status}
-            updateDate={item.updatedAt}
-            worker={item.worker}
-            onClick={(id) => onShowModal(id)}
-          />
-        )
-      })
-    } else {
-      return mainStore.todo?.map((item) => {
-        return (
-          <TodoItem
-            key={item.id}
-            id={item.id}
-            title={item.title}
-            description={item.description}
-            createDate={item.createdAt}
-            creator={item.creator}
-            finishDate={item.finishDate}
-            priority={item.priority}
-            status={item.status}
-            updateDate={item.updatedAt}
-            worker={item.worker}
-            onClick={(id) => onShowModal(id)}
-          />
-        )
-      })
-    }
-  }
-
   return (
     <div className={styles.page}>
       <div className={styles.header}>
@@ -138,34 +99,40 @@ const MainPage = () => {
         <div className={styles.filter}>
           <Typography size={16}>Варианты отображения:</Typography>
           <Button
-            size="small"
             onClick={() => filteredTodo('На сегодня')}
             title="На сегодня"
           />
+          <Button onClick={() => filteredTodo('На неделю')} title="На неделю" />
           <Button
-            size="small"
-            onClick={() => filteredTodo('На неделю')}
-            title="На неделю"
-          />
-          <Button
-            size="small"
             onClick={() => filteredTodo('На будущее')}
             title="На будущее"
           />
           {authStore.user?.role === 'MANAGER' && (
             <Button
               title="По исполнителям"
-              size="small"
               onClick={() => filteredTodo('По исполнителю')}
             />
           )}
-          <Button
-            size="small"
-            onClick={() => setFilter(false)}
-            title="Без фильтра"
-          />
+          <Button onClick={() => setFilter(false)} title="Без фильтра" />
         </div>
-        {renderContent()}
+        {(filter ? todo : mainStore.todo)?.map((item) => {
+          return (
+            <TodoItem
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              description={item.description}
+              createDate={item.createdAt}
+              creator={item.creator}
+              finishDate={item.finishDate}
+              priority={item.priority}
+              status={item.status}
+              updateDate={item.updatedAt}
+              worker={item.worker}
+              onClick={(id) => onShowModal(id)}
+            />
+          )
+        })}
       </div>
     </div>
   )

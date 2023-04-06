@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react'
+import { useState, useCallback } from 'react'
 import Button from '../../../ui/Button/Button'
 import Input from '../../../ui/Input/Input'
 import { Typography } from '../../../ui/Typography'
@@ -10,20 +10,15 @@ import { observer } from 'mobx-react-lite'
 const Auth = () => {
   const authStore = useAuthStore()
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [{email, password}, setForm] = useState({email: '', password: ''})
 
-  function onChangeLogin(e: ChangeEvent<HTMLInputElement>) {
-    setEmail(e.target.value)
-  }
+  const handleChange = useCallback(({target: {name, value}}) => {
+    setForm((prevForm) => ({...prevForm, [name]: value}))
+  }, [])
 
-  function onChangePassword(e: ChangeEvent<HTMLInputElement>) {
-    setPassword(e.target.value)
-  }
-
-  async function handleSubmit() {
+  const handleSubmit = useCallback(async () =>  {
     await authStore.handleSubmit({ email, password })
-  }
+  }, [authStore, email, password])
 
   return (
     <div className="authPage">
@@ -38,17 +33,19 @@ const Auth = () => {
         </Typography>
         <Input
           labelSize={18}
+          name='email'
           label="Логин"
           value={email}
-          onChange={onChangeLogin}
+          onChange={handleChange}
         />
         <Input
           labelSize={18}
+          name='password'
           type={'password'}
           size={18}
           label="Пароль"
           value={password}
-          onChange={onChangePassword}
+          onChange={handleChange}
         />
         <Button
           className={styles.button}

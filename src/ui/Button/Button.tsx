@@ -3,8 +3,9 @@ import { IButtonProps } from "./types"
 import cn from 'classnames'
 
 import styles from './Button.module.scss'
+import { memo } from "react"
 
-const Button = ({title, size = 'medium', className, onClick}: IButtonProps) => {
+const Button = ({title, size = 'small', className, onClick}: IButtonProps) => {
     const classNames = cn(styles[size], className, styles.button)
 
     return (
@@ -12,4 +13,4 @@ const Button = ({title, size = 'medium', className, onClick}: IButtonProps) => {
     )
 }
 
-export default Button
+export default memo(Button)
