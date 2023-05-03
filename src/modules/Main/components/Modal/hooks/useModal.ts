@@ -46,6 +46,19 @@ const useModal = ({ onClick, id }: IModalProps) => {
     }))
   }
 
+  const onCloseModal = useCallback(() => {
+    setForm(() => ({
+      title: '',
+      description: '',
+      finishDate: '',
+      status: '',
+      priority: '',
+      worker: '',
+    }))
+
+    onClick()
+  }, [onClick])
+
   const onSubmit = useCallback(async () => {
     if (id) {
       await mainRest.updateTodo({
@@ -70,32 +83,9 @@ const useModal = ({ onClick, id }: IModalProps) => {
         creator,
       })
     }
+    onCloseModal()
     onClick()
-  }, [
-    authStore.user?.email,
-    description,
-    finishDate,
-    id,
-    mainRest,
-    onClick,
-    priority,
-    status,
-    title,
-    worker,
-  ])
-
-  const onCloseModal = useCallback(() => {
-    setForm(() => ({
-      title: '',
-      description: '',
-      finishDate: '',
-      status: '',
-      priority: '',
-      worker: '',
-    }))
-
-    onClick()
-  }, [onClick])
+  }, [authStore.user?.email, description, finishDate, id, mainRest, onClick, onCloseModal, priority, status, title, worker])
 
   const handleChange = useCallback(({ target: { value, name } }) => {
     setForm((prevForm) => ({ ...prevForm, [name]: value }))

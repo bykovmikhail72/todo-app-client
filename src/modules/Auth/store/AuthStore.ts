@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import { container, singleton } from 'tsyringe'
 import { AuthRest } from '../services/AuthRest'
-import { IUser } from '../types/types'
+import { IUser } from '../models/models'
 
 @singleton()
 export class AuthStore {
