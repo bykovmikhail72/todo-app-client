@@ -5,6 +5,7 @@ import styles from './TodoItem.module.scss'
 import { Typography } from 'ui/Typography'
 
 import cn from 'classnames'
+import XRegular from 'ui/icons/XRegular'
 
 const TodoItem = ({
   title,
@@ -24,6 +25,7 @@ const TodoItem = ({
 
   return (
     <div className={styles.item} onClick={() => onClick(id)}>
+      <XRegular />
       <div>
         Заголовок
         <Typography size={14} className={titleClassNames}>

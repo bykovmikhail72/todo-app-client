@@ -2,103 +2,35 @@ import Input from 'ui/Input/Input'
 import { Typography } from 'ui/Typography'
 import { IModalProps } from './types'
 import { useAuthStore } from 'modules/Auth/store/AuthStore'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import cn from 'classnames'
 
 import styles from './Modal.module.scss'
 import Button from 'ui/Button/Button'
-import { useMainRest } from 'modules/Main/services/MainRest'
 import { observer } from 'mobx-react-lite'
-import { useMainStore } from 'modules/Main/store/MainStore'
+import useModal from './hooks/useModal'
 
 const Modal = ({ id, className, onClick }: IModalProps) => {
   const authStore = useAuthStore()
-  const mainStore = useMainStore()
-  const mainRest = useMainRest()
-  const isDisabled = () => {
-    if (authStore.user?.role === 'MANAGER') {
-      return false
-    } else {
-      if (id) {
-        return true
-      } else {
-        return false
-      }
-    }
-  }
-
-  const [
-    { title, description, finishDate, status, priority, worker },
-    setForm,
-  ] = useState({
-    title: '',
-    description: '',
-    finishDate: '',
-    status: '',
-    priority: '',
-    worker: '',
-  })
+  const {
+    title,
+    description,
+    finishDate,
+    status,
+    priority,
+    worker,
+    setInitialData,
+    onCloseModal,
+    handleChange,
+    onSubmit,
+    isDisabled,
+  } = useModal({ onClick, id })
 
   useEffect(() => {
     if (id) {
-      const index = mainStore.todo.findIndex((item) => item.id === id)
-
-      console.log({...mainStore.todo})
-
-      setForm(() => ({
-        title: mainStore.todo[index]?.title,
-        description: mainStore.todo[index]?.description,
-        finishDate: mainStore.todo[index]?.finishDate,
-        status: mainStore.todo[index]?.status,
-        priority: mainStore.todo[index]?.priority,
-        worker: mainStore.todo[index]?.worker,
-      }))
+      setInitialData()
     }
-  }, [id, mainStore.todo])
-
-  const onSubmit = useCallback(async () => {
-    if (id) {
-      await mainRest.updateTodo({
-        id,
-        title,
-        description,
-        finishDate,
-        priority,
-        status,
-        worker,
-      })
-    } else {
-      const creator = authStore.user?.email
-
-      await mainRest.createTodo({
-        title,
-        description,
-        finishDate,
-        priority,
-        status,
-        worker,
-        creator,
-      })
-    }
-    onClick()
-  }, [authStore.user?.email, description, finishDate, id, mainRest, onClick, priority, status, title, worker])
-
-  const handleChange = useCallback(({ target: { value, name } }) => {
-    setForm((prevForm) => ({ ...prevForm, [name]: value }))
-  }, [])
-
-  const onCloseModal = useCallback(() => {
-    setForm(() => ({
-      title: '',
-      description: '',
-      finishDate: '',
-      status: '',
-      priority: '',
-      worker: '',
-    }))
-
-    onClick()
-  }, [onClick])
+  }, [id])
 
   const modalClassNames = cn(styles.modal, className)
   const layoutClassNames = cn(styles.layout, className)

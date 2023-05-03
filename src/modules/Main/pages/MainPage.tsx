@@ -34,7 +34,7 @@ const MainPage = () => {
   const onShowModal = useCallback(
     (id?: number) => {
       setIsShowModal(!isShowModal)
-      id && setId(id)
+      typeof id === 'number' && setId(id)
     },
     [isShowModal],
   )
